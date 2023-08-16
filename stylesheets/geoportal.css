@@ -58,6 +58,15 @@ body{
     margin-left: 20;
 
 }
+#grid_resolution:only-child option {
+    display: none;
+}
+#grid_resolution {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 
 .site-desc {
     display: block;

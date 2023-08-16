@@ -113,7 +113,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
         // se comentan variables topograficas por expansión de terreno
 
-        var tags = abio_tab ? ['a_taxon', 'a_raster',  'a_socio', 'a_emisiones'] : ['a_taxon'];
+        var tags = abio_tab ? ['a_taxon', 'a_raster',  'a_socio'] : ['a_taxon'];
         //var tags = ['a_taxon', 'a_raster', 'a_socio'];
 
 
@@ -188,7 +188,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         fetch("https://covid19.c3.unam.mx/gateway/api/nodes/",{
                             method: "POST",
                             headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({ query: 'query { get_diseases_hospederos {name}}'}),
+                            body: JSON.stringify({ query: 'query { get_diseases_hospederos {name} }'}),
                         })
                             .then(res => res.json())
                             .then((function(resp){
@@ -203,13 +203,15 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 } catch (error) {
                                     console.log("no diseases")
                                 }
+                                let filteredDiseases = disease.filter(disease => disease.name === "Enfermedad de Chagas");
+                                console.log(filteredDiseases)
 
-                                for (let index = 0; index < disease.length; index++){
-                                    //console.log(disease[index]["name"])
+
+                                if (filteredDiseases.length > 0) {
                                     var opt = document.createElement('option');
-                                    opt.setAttribute("class", "disease_opt")
-                                    opt.value = disease[index]["name"];
-                                    opt.innerHTML = disease[index]["name"];
+                                    opt.setAttribute("class", "disease_opt");
+                                    opt.value = filteredDiseases[0]["name"];
+                                    opt.innerHTML = filteredDiseases[0]["name"];
                                     select.append(opt);
                                 }
                                
@@ -235,13 +237,15 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 } catch (error) {
                                     console.log("no diseases")
                                 }
+                                let filteredDiseases = disease.filter(disease => disease.name === "Enfermedad de Chagas");
+                                console.log(filteredDiseases)
 
-                                for (let index = 0; index < disease.length; index++){
-                                    //console.log(disease[index]["name"])
+
+                                if (filteredDiseases.length > 0) {
                                     var opt = document.createElement('option');
-                                    opt.setAttribute("class", "disease_opt")
-                                    opt.value = disease[index]["name"];
-                                    opt.innerHTML = disease[index]["name"];
+                                    opt.setAttribute("class", "disease_opt");
+                                    opt.value = filteredDiseases[0]["name"];
+                                    opt.innerHTML = filteredDiseases[0]["name"];
                                     select.append(opt);
                                 }
                             }));
@@ -266,13 +270,15 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 } catch (error) {
                                     console.log("no diseases")
                                 }
+                                let filteredDiseases = disease.filter(disease => disease.name === "Enfermedad de Chagas");
+                                console.log(filteredDiseases)
 
-                                for (let index = 0; index < disease.length; index++){
-                                    //console.log(disease[index]["name"])
+
+                                if (filteredDiseases.length > 0) {
                                     var opt = document.createElement('option');
-                                    opt.setAttribute("class", "disease_opt")
-                                    opt.value = disease[index]["name"];
-                                    opt.innerHTML = disease[index]["name"];
+                                    opt.setAttribute("class", "disease_opt");
+                                    opt.value = filteredDiseases[0]["name"];
+                                    opt.innerHTML = filteredDiseases[0]["name"];
                                     select.append(opt);
                                 }
                             }));
@@ -533,53 +539,6 @@ var variable_module = (function (verbose, url_zacatuche) {
 
         }
 
-        self.getTreeFuturo = function (){
-            console.log("self.getTreeFuturo")
-            var root = ['2021-2040','2041-2060', '2061-2080', '2081-2100'];
-            var firstchilds = ['ssp126', 'ssp245', 'ssp585'];
-            var secondchilds = ['MPI-ESM1-2-HR', "HadGEM3-GC31-LL",  "FIO-ESM-2-0", "EC-Earth3-Veg", "INM-CM5-0", "MRI-ESM2-0", "MIROC6","IPSL-CM6A-LR", "UKESM1-0-LL", "CMCC-ESM2"];
-
-            var data = [];
-
-            for (var i = 0; i < root.length; i++) {
-                var root_node = {'text': root[i], 'children': []};
-
-                for (var j = 0; j < firstchilds.length; j++) {
-                    var firstchild_node = {'text': firstchilds[j], 'children': []};
-
-                    for (var k = 0; k < secondchilds.length; k++) {
-                        var secondchild_node = {'text': secondchilds[k]};
-                        firstchild_node['children'].push(secondchild_node);
-                    }
-
-                    root_node['children'].push(firstchild_node);
-                }
-
-                data.push(root_node);
-            } 
-                
-                $("#jstree_variables_futurofuente").jstree({
-                    "plugins":["wholerow", "checkbox"],
-                    "core":{
-                         "data": data,
-                         "themes":{
-                             "name":"proton",
-                             "responsive":true
-                         },
-                     "check_callback":true
-                    }
-                 })
-                 $(function () {$('#jstree_variables_futurofuente').jstree();});                 
-                 
-                 $("#jstree_variables_futurofuente").on("changed.jstree", function(event, data) {                    
-                    self.getChangeTreeVarEmisiones(event, data);
-                  });
-        }
-
-
-
-
-
         self.getTreeSocio = function (){
             var query = "query{all_censo_inegi_2020_covariables(limit: 2400, filter:\"\"){id name interval bin code}}"
             _VERBOSE ? console.log("self.getTreeSocio") : _VERBOSE;
@@ -715,7 +674,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.getTreeTarget()
         self.getTreeVarRaster()
         self.getTreeSocio() 
-        self.getTreeFuturo()
+        
         
 
         /****************************************************************************************** GENERACION DE PANEL */
@@ -1685,6 +1644,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
                         .click(function (e) {
                             console.log(self.arraySocioSelected2)
+                            console.log(self.arraySocioSelected)
                             self.formQuery("jstree_variables_socio_" + id, self.arraySocioSelected2)
                             self.addOtherGroup("jstree_variables_socio_" + id, self.arraySocioSelected,  'Socio', 'treeAddedPanel_' + id, _TYPE_ABIO);
                             e.preventDefault(); 
@@ -1703,58 +1663,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .appendTo(tab_pane);
 
             }
-            else if (i===3){
-                var tab_pane = $('<div/>')
-                        .attr('id', 'tab' + i + "_" + id)
-                        .addClass('tab-pane')
-                        .appendTo(tab_content)
-                        
-                var tree_nav_container = $('<div/>')
-                        .addClass('row nav_species_container')
-                        .appendTo(tab_pane)
-                        
-                
-
-                var div_tree = $('<div/>')
-                        .attr('id', "treeVariableFuturo" + id)
-                        .addClass('myScrollableBlockVar')
-                        .appendTo(tree_nav_container);
-
-                var tree = $('<div/>')                        
-                        .attr('id', "jstree_variables_futuro" + id)
-                        .appendTo(div_tree);
-                
-                        
-                        var btn_add = $('<button/>')
-                        .attr('id', 'add_group_clima' + "_" + id)
-                        .attr('type', 'button')
-                        .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
-                        .click(function (e) {
-                            
-                                console.log(arrayEmisionSelected)                                                     
-                                //self.addOtherGroup("jstree_variables_futurofuente", arrayEmisionSelected, 'Emisiones', 'treeAddedPanel_' + id, _TYPE_ABIO)                         
-                                self.addEmisiones(arrayEmisionSelected)
-                                //e.preventDefault();   
-                            
-                                                  
-                        })
-                        .appendTo(tab_pane);
-
-                var btn_add = $('<button/>')
-                        .attr('id', 'clean_var_clima' + "_" + id)
-                        .attr('type', 'button')
-                        .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
-                        .click(function (e) {
-                            arrayEmisionSelected=[]
-                            self.cleanVariables("jstree_variables_futurofuente", 'treeAddedPanel_' + id, _TYPE_ABIO);
-                            var jstreeInstance = $('#jstree_variables_futurofuente').jstree(true);
-                            jstreeInstance.deselect_all();
-                            subarrays={}
-                          
-                        })
-                        .appendTo(tab_pane);
-
-            }
+            
             
         });
 
@@ -2057,36 +1966,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
         }
 
-        self.getChangeTreeVarEmisiones = function(event, data) {
-            _VERBOSE ? console.log("self.getChangeTreeVarEmisiones") : _VERBOSE;
-            arrayEmisionSelected = [];
-            // Obtener los nodos seleccionados
-            var nodos = data.selected;
-          
-            // Iterar sobre los nodos seleccionados
-            nodos.forEach(function(nodo) {
-              // Obtener el objeto de nodo
-              var nodeObject = data.instance.get_node(nodo);
-          
-              var nodeText = nodeObject.text;
-              var parentNode = data.instance.get_node(nodeObject.parent);
-              var grandparentNode = parentNode ? data.instance.get_node(parentNode.parent) : null;
-          
-              var parentNodeText = parentNode ? parentNode.text : null;
-              var grandparentNodeText = grandparentNode ? grandparentNode.text : null;
-          
-              var nodoObjeto = {
-                label: nodeText,
-                parent: parentNodeText,
-                grandparent: grandparentNodeText
-              };
-          
-              arrayEmisionSelected.push(nodoObjeto);
-            });
-          
-            console.log(arrayEmisionSelected);
-            return arrayEmisionSelected;
-          }
+        
 
 
 
@@ -2296,53 +2176,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                           
         }
 
-        self.addEmisiones = function(arr) {
-            subarrays = {};
-
-            // Dividir el array en subarrays
-            arr.forEach(function(objeto) {
-                if(objeto.parent && objeto.grandparent){
-                    var parent = objeto.parent;
-                    var grandparent = objeto.grandparent;
-                    var key = parent + '_' + grandparent;
-                    if (!(key in subarrays)) {
-                        subarrays[key] = [];
-                    }
-                    subarrays[key].push(objeto);
-                }
-            });
-            console.log(subarrays);
-            
-            
-              // Crear el div con la clase "row_var_item" y el texto "Gpo GCM"
-              var $div = $('<div>', {class: 'row_var_item'}).text('Gpo GCM');
-              
-              // Crear el botón con las clases "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var"
-              var $button = $('<button>', {class: 'btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var'});
-              
-              // Crear el div con la clase "cell_item" y el texto de las propiedades del objeto
-              $div.append($button)
-              
-              Object.keys(subarrays).forEach(element =>{
-                var $innerDiv = $('<div>', {class: 'cell_item'}).text(element).hide();
-                $div.append($innerDiv)
-              })
-            
-
-              $button.on('click', function() {
-                $div.remove()
-              });
-
-              $div.on('click', function() {
-                $div.find('.cell_item').toggle();
-              });
-            
-            
        
-              $('#treeAddedPanel_fuente').append($div);
-            return subarrays
-                
-          }
 
         
         // Evento que es generado cuando se desea agregar un grupo seleccionado previamente, realiza la adición del grupo seleccionado al conjunto de variables con las cuales se realizan los cálculos de épsilon y score en ambos sistemas
@@ -2552,6 +2386,7 @@ var variable_module = (function (verbose, url_zacatuche) {
             console.log("updateVarSelArray")         
             console.log(self.var_sel_array)
             
+            
             if (operacion == _BORRADO) {
 
                 _VERBOSE ? console.log("elemento borrado") : _VERBOSE;
@@ -2579,6 +2414,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
 
             _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
+            
             
             //species_target_array guarda los datos target para el body
 
