@@ -1949,12 +1949,12 @@ var variable_module = (function (verbose, url_zacatuche) {
                     _VERBOSE ? console.log(node_temp) : _VERBOSE;
                     if (node_temp.attr.nivel === 7){                        
                         
-                        self.arraySocioSelected.push({label: node_temp.text, id: node_temp.attr, parent: node_temp.parent, level: node_temp.attr.level, type: node_temp.attr.type});
+                        self.arraySocioSelected.push({label: node_temp.text, id: node_temp.attr.code, parent: node_temp.parent, level: node_temp.attr.level, type: node_temp.attr.type});
                         self.arraySocioSelected2.push({taxon: "code", value: node_temp.attr.code}) 
 
                     }else if(node_temp.attr.nivel === 8){
                         self.arraySocioSelected.push({label: node_temp.text, id: node_temp.attr, parent: node_temp.attr.parent, level: node_temp.attr.level, type: node_temp.attr.type});
-                        self.arraySocioSelected2.push({taxon: "id", value:node_temp.attr.id  }) 
+                        self.arraySocioSelected2.push({taxon: "id", value:node_temp.attr.id.code  }) 
                     }
                 }
 

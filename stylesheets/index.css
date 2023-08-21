@@ -228,3 +228,14 @@ h1#epi-species{
     url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/slider/epispecies.jpg),
     url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/projects/epispecies.svg);
 }
+
+.flex-container {
+    display: flex;
+    padding: 5px;
+}
+
+.flex-item {
+    flex: 5; 
+    
+    padding: 10px; 
+}
