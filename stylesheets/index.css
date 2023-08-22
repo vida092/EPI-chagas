@@ -182,7 +182,7 @@ p:not(.copyright){
     color:var(--mainColorDark);
 }
 .steps{
-    align-items: center;
+    align-items: flex-end;
     display: flex;
     justify-content: space-between;
     list-style: none;
@@ -219,6 +219,16 @@ p:not(.copyright){
 .steps li:nth-child(3){
     background-image: url(../images/icon-chart.svg);
 }
+#usuario {
+    border: #8b8a8b;
+    background-color: #e2e2e2;
+  }
+
+#contrasena{
+    border: #8b8a8b;
+    background-color: #e2e2e2;
+
+}
 
 /*------------------------------------------------------------------------
                             EPI-SPECIES STYLES
@@ -235,7 +245,11 @@ h1#epi-species{
 }
 
 .flex-item {
-    flex: 5; 
+   
     
     padding: 10px; 
+}
+
+.flex-item:last-child {
+    flex: 1; 
 }

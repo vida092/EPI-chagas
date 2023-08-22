@@ -22,6 +22,8 @@
 
     <script src="plugins/jquery/jquery-2.1.4.min.js"></script>
     <script src="plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="/javascripts/login.js"></script>
+    
 
 
     <link href="https://fonts.googleapis.com/css?family=Poppins|Raleway:500" rel="stylesheet">
@@ -66,22 +68,40 @@
 
 
     </header>
-    <section id="content" class="flex-container">
-        <div class ="flex-item">
-            <h2>Bienvenido a EpI-Chagas<span>Plataforma de Eco-epidemiología Espacial</span></h2>
-            <p>Epi-Chagas es una herramienta interactiva para el análisis del nicho epidemiológico de la enfermedad de Chagas  y la creación de modelos predictivos para analizar su dinámica espacio-temporal en México.</p>
-            <h3>Análisis de nicho epidemiológico</h3>
-            <p>Si deseas realizar un análisis de nicho epidemiológico basta con seguir los siguientes pasos:</p>
-            <ul class="steps">
-                <li>Selecciona el agente y la raíz taxonómica</li>
-                <li>Escoge tus covariables</li>
-                <li>Analiza tus resultados</li>
-                <li><a class="button-1" href="geoportal_v0.1.html">Ir a Análisis de Nicho</a></li>
-            </ul>
-            <p>Si es la primera vez que utilizas la plataforma, te recomendamos dar clic en el botón de <b>Casos de uso</b> o el botón de <b>Tutorial</b> que te orientara paso a paso como utilizar EpI-SPECIES</p>
-        </div>
-        <div class ="flex-item">
-            <p>login</p>
+    <section id="content">
+        <div class="row">
+            <div class="col-md-8">
+                <div class ="flex-item">
+                    <h2>Bienvenido a EpI-Chagas<span>Plataforma de Eco-epidemiología Espacial</span></h2>
+                    <p>Epi-Chagas es una herramienta interactiva para el análisis del nicho epidemiológico de la enfermedad de Chagas  y la creación de modelos predictivos para analizar su dinámica espacio-temporal en México.</p>
+                    <h3>Análisis de nicho epidemiológico</h3>
+                    <p>Si deseas realizar un análisis de nicho epidemiológico basta con seguir los siguientes pasos:</p>
+                    <ul class="steps" >
+                        <li>Selecciona el agente y la raíz taxonómica</li>
+                        <li>Escoge tus covariables</li>
+                        <li>Analiza tus resultados</li>
+                        <li>
+                            
+                        </li>
+                    </ul>
+                    <p>Si es la primera vez que utilizas la plataforma, te recomendamos dar clic en el botón de <b>Casos de uso</b> o el botón de <b>Tutorial</b> que te orientara paso a paso como utilizar EpI-SPECIES</p>
+                </div>
+            </div>
+                <div class ="col-md-4">
+                    <h2 style="text-align: center;">Iniciar Sesión</h2>
+
+                        <form id="login-form" style="display: inline-block;">
+                            <label for="usuario">Usuario:</label>
+                            <input type="text" id="usuario" name="usuario" required><br><br>
+
+                            <label for="contrasena">Contraseña:</label>
+                            <input type="password" id="contrasena" name="contrasena" required><br><br>
+
+                            <a class="button-1" onclick="submitLoginForm()">Iniciar Sesión</a>
+
+                            
+                        </form>
+                </div>
         </div>
     </section>
     <footer>

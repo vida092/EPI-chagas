@@ -1,6 +1,13 @@
 var _PARENT_FIELD = "";
 var _LABEL_VALUE = "";
 var _AGENT_SELECTED = "";
+document.addEventListener('DOMContentLoaded', function() {
+    // Acceder al token desde localStorage
+    token = localStorage.getItem("token");
+    
+});
+
+
 
 
 /**
@@ -158,6 +165,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
         self.arrayOtherSelected = [];
         self.groupothervar_dataset = [];
+        
 
 
         // self.getTaxones =function() {
@@ -311,8 +319,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var query = "query{occurrences_by_taxon_"+ nodo + "(query: \"nombreenfermedad='"+ disease_text_selected +"'\"){familia genero nombrecientifico}}"
                         console.log(query)
                         $.ajax({
-                            url: _url,
+                            url: "http://10.90.0.42:8008/api/nodes/",
                             method: "POST",
+                            headers: {Authorization: "Bearer " + token,},
                             contentType: "application/json",
                             data: JSON.stringify({query: query}),
                             success: function(resp){
@@ -384,10 +393,11 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var query = "query{occurrences_by_taxon_"+ nodo + "(query: \"nombreenfermedad='"+ disease_text_selected +"'\"){genero nombrecientifico}}"
                         console.log(query)
                         $.ajax({
-                            url: _url,
+                            url: "http://10.90.0.42:8008/api/nodes/",
                             method: "POST",
+                            headers: {Authorization: "Bearer " + token,},
                             contentType: "application/json",
-                            data: JSON.stringify({query:query}),
+                            data: JSON.stringify({query: query}),
                             success: function(resp){
                                 if (agent_selected == 'Hospederos'){
                                     var species = resp.data.occurrences_by_taxon_hospederos;                                            
@@ -449,8 +459,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var query = "query{occurrences_by_taxon_"+ nodo + "(query: \"nombreenfermedad='"+ disease_text_selected +"'\"){nombrecientifico}}"
                         console.log(query)
                         $.ajax({
-                            url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                            url: "http://10.90.0.42:8008/api/nodes/",
                             method: "POST",
+                            headers: {Authorization: "Bearer " + token,},
                             contentType: "application/json",
                             data: JSON.stringify({query: query}),
                             success: function(resp){
@@ -544,8 +555,9 @@ var variable_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log("self.getTreeSocio") : _VERBOSE;
             console.log(id)
             $.ajax({
-                url:"https://covid19.c3.unam.mx/gateway/api/nodes/",
+                url: "http://10.90.0.42:8008/api/nodes/",
                 method: "POST",
+                headers: {Authorization: "Bearer " + token,},
                 contentType: "application/json",
                 data: JSON.stringify({query: query}),
                 success: function(resp){
@@ -606,8 +618,11 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.getTreeVarRaster = function () {
             var query = "query{all_worldclim_covariables(limit: 550, filter: \"\"){id label interval layer icat}}"
                         $.ajax({
-                            url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                            url: "http://10.90.0.42:8008/api/nodes/",
                             method: "POST",
+                            headers: {
+                                Authorization: "Bearer " + token,
+                            },
                             contentType: "application/json",
                             data: JSON.stringify({query: query}),
                             success: function(data){
@@ -954,8 +969,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 console.log(query)                                
                                 
                                 $.ajax({
+                                    url: "http://10.90.0.42:8008/api/nodes/",
                                     method: "POST",
-                                    url: _url,
+                                    headers: {Authorization: "Bearer " + token,},
                                     contentType: "application/json",
                                     data: JSON.stringify({query: query}),
                                     success: function (resp) {
@@ -1007,8 +1023,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[0]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){clasevalida ordenvalido familiavalida generovalido especievalida}}"
                                     $.ajax({
-                                        url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                                        url: "http://10.90.0.42:8008/api/nodes/",
                                         method: "POST",
+                                        headers: {Authorization: "Bearer " + token,},
                                         contentType: "application/json",
                                         data: JSON.stringify({query: query}),
                                         success: function(resp){                
@@ -1115,8 +1132,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[1]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){ordenvalido familiavalida generovalido especievalida}}"
                                     $.ajax({
-                                        url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                                        url: "http://10.90.0.42:8008/api/nodes/",
                                         method: "POST",
+                                        headers: {Authorization: "Bearer " + token,},
                                         contentType: "application/json",
                                         data: JSON.stringify({query: query}),
                                         success: function(resp){                
@@ -1212,9 +1230,10 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[2]
                                     var query = "query{all_snib_covariables(limit:2500, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){familiavalida generovalido especievalida}}"
                                     $.ajax({
-                                        url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                                        url: "http://10.90.0.42:8008/api/nodes/",
                                         method: "POST",
                                         contentType: "application/json",
+                                        headers: {Authorization: "Bearer " + token,},
                                         data: JSON.stringify({query: query}),
                                         success: function(resp){                
                                             var sel = resp.data.all_snib_covariables
@@ -1295,9 +1314,10 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[3]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){generovalido especievalida}}"
                                     $.ajax({
-                                        url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                                        url: "http://10.90.0.42:8008/api/nodes/",
                                         method: "POST",
                                         contentType: "application/json",
+                                        headers: {Authorization: "Bearer " + token,},
                                         data: JSON.stringify({query: query}),
                                         success: function(resp){                
                                             var sel = resp.data.all_snib_covariables
@@ -1368,9 +1388,10 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[4]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){especievalida}}"
                                     $.ajax({
-                                        url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                                        url: "http://10.90.0.42:8008/api/nodes/",
                                         method: "POST",
                                         contentType: "application/json",
+                                        headers: {Authorization: "Bearer " + token,},
                                         data: JSON.stringify({query: query}),
                                         success: function(resp){                
                                             var sel = resp.data.all_snib_covariables
@@ -1658,7 +1679,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .click(function (e) {
                             // self.groupbioclimvar_dataset = [];
                             self.cleanVariables("jstree_variables_socio_" + id, 'treeAddedPanel_' + id, _TYPE_ABIO);
-                            $("jstree_variables_socio_" + id).jstree(true).deselect_all();
+                            $("#jstree_variables_socio_" + id).jstree(true).deselect_all();
                         })
                         .appendTo(tab_pane);
 
@@ -1851,8 +1872,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                 self.arrayBioclimSelected.push({label: "WordlClim", id: " ", parent: "Raster ", level: "5", type: " "})
                 $.ajax({
                     method: "POST",
-                    url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                    url: "http://10.90.0.42:8008/api/nodes/",
                     contentType: "application/json",
+                    headers: {Authorization: "Bearer " + token,},
                     data: JSON.stringify({query: "query{ all_worldclim_covariables(limit: 1000, filter: \"\"){ layer}}"}),
                     success: function(resp){
                         _module_toast.showToast_CenterCenter("Se han cargado todos los layers", "success")
@@ -1917,7 +1939,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                 console.log("elegiste INEGI2020")
                 $.ajax({
                     method: "POST",
-                    url: "https://covid19.c3.unam.mx/gateway/api/nodes/",
+                    url: "http://10.90.0.42:8008/api/nodes/",
+                    headers: {Authorization: "Bearer " + token,},
                     contentType: "application/json",
                     data: JSON.stringify({query: "query{all_censo_inegi_2020_covariables(limit: 2000, filter:\"\"){code}}"}),
                     success:function(resp){                                                

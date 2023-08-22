@@ -999,7 +999,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
         var hasTotal = false;
-        alert(_subgroups)
+        
         if (_subgroups.length > 1) {
             hasTotal = true;
         }
