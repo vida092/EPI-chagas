@@ -22,6 +22,8 @@ var variable_module = (function (verbose, url_zacatuche) {
     var _selectors_created = [];
     _module_toast = toast_module(_VERBOSE);
     _module_toast.startToast();
+    //var _url = "https://covid19.c3.unam.mx/gateway/api/nodes/"
+    var _url =  "http://10.90.0.42:8008/api/nodes/"
     
     
 
@@ -193,7 +195,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                 switch (var_obj){
                     case "Hospederos":
-                        fetch("https://covid19.c3.unam.mx/gateway/api/nodes/",{
+                        fetch(_url,{
                             method: "POST",
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_hospederos {name} }'}),
@@ -227,7 +229,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             }));
                         break;
                     case "Vectores":
-                        fetch("https://covid19.c3.unam.mx/gateway/api/nodes/",{
+                        fetch(_url,{
                             method: "POST",
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_vectores {name}}'}),
@@ -260,7 +262,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                         break;
                     case "Patogenos":
-                        fetch("https://covid19.c3.unam.mx/gateway/api/nodes/",{
+                        fetch(_url,{
                             method: "POST",
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_patogenos {name}}'}),
@@ -306,7 +308,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                 var tax_root = $("#taxon_tree_root_value").val()
                 console.log(tax_root)
 
-                var _url = "https://covid19.c3.unam.mx/gateway/api/nodes/"
+                //var _url = "https://covid19.c3.unam.mx/gateway/api/nodes/"
 
                 let nodo = agent_selected.toLowerCase()
 
@@ -319,7 +321,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var query = "query{occurrences_by_taxon_"+ nodo + "(query: \"nombreenfermedad='"+ disease_text_selected +"'\"){familia genero nombrecientifico}}"
                         console.log(query)
                         $.ajax({
-                            url: "http://10.90.0.42:8008/api/nodes/",
+                            url: _url,
                             method: "POST",
                             headers: {Authorization: "Bearer " + token,},
                             contentType: "application/json",
@@ -393,7 +395,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var query = "query{occurrences_by_taxon_"+ nodo + "(query: \"nombreenfermedad='"+ disease_text_selected +"'\"){genero nombrecientifico}}"
                         console.log(query)
                         $.ajax({
-                            url: "http://10.90.0.42:8008/api/nodes/",
+                            url: _url,
                             method: "POST",
                             headers: {Authorization: "Bearer " + token,},
                             contentType: "application/json",
@@ -459,7 +461,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var query = "query{occurrences_by_taxon_"+ nodo + "(query: \"nombreenfermedad='"+ disease_text_selected +"'\"){nombrecientifico}}"
                         console.log(query)
                         $.ajax({
-                            url: "http://10.90.0.42:8008/api/nodes/",
+                            url: _url,
                             method: "POST",
                             headers: {Authorization: "Bearer " + token,},
                             contentType: "application/json",
@@ -555,7 +557,7 @@ var variable_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log("self.getTreeSocio") : _VERBOSE;
             console.log(id)
             $.ajax({
-                url: "http://10.90.0.42:8008/api/nodes/",
+                url: _url,
                 method: "POST",
                 headers: {Authorization: "Bearer " + token,},
                 contentType: "application/json",
@@ -618,7 +620,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.getTreeVarRaster = function () {
             var query = "query{all_worldclim_covariables(limit: 550, filter: \"\"){id label interval layer icat}}"
                         $.ajax({
-                            url: "http://10.90.0.42:8008/api/nodes/",
+                            url: _url,
                             method: "POST",
                             headers: {
                                 Authorization: "Bearer " + token,
@@ -964,12 +966,12 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                                 _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
                                 _GRID_RES = $("#grid_resolution").val();                                
-                                var _url = "https://covid19.c3.unam.mx/gateway/api/nodes/"
+                                
                                 let lst = []
                                 console.log(query)                                
                                 
                                 $.ajax({
-                                    url: "http://10.90.0.42:8008/api/nodes/",
+                                    url: _url,
                                     method: "POST",
                                     headers: {Authorization: "Bearer " + token,},
                                     contentType: "application/json",
@@ -1023,7 +1025,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[0]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){clasevalida ordenvalido familiavalida generovalido especievalida}}"
                                     $.ajax({
-                                        url: "http://10.90.0.42:8008/api/nodes/",
+                                        url: _url,
                                         method: "POST",
                                         headers: {Authorization: "Bearer " + token,},
                                         contentType: "application/json",
@@ -1132,7 +1134,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[1]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){ordenvalido familiavalida generovalido especievalida}}"
                                     $.ajax({
-                                        url: "http://10.90.0.42:8008/api/nodes/",
+                                        url: _url,
                                         method: "POST",
                                         headers: {Authorization: "Bearer " + token,},
                                         contentType: "application/json",
@@ -1230,7 +1232,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[2]
                                     var query = "query{all_snib_covariables(limit:2500, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){familiavalida generovalido especievalida}}"
                                     $.ajax({
-                                        url: "http://10.90.0.42:8008/api/nodes/",
+                                        url: _url,
                                         method: "POST",
                                         contentType: "application/json",
                                         headers: {Authorization: "Bearer " + token,},
@@ -1314,7 +1316,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[3]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){generovalido especievalida}}"
                                     $.ajax({
-                                        url: "http://10.90.0.42:8008/api/nodes/",
+                                        url: _url,
                                         method: "POST",
                                         contentType: "application/json",
                                         headers: {Authorization: "Bearer " + token,},
@@ -1388,7 +1390,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     var button_val = lst[4]
                                     var query = "query{all_snib_covariables(limit:2000, filter:\""+ button_val +" ='"+ ui.item.id +"'\"){especievalida}}"
                                     $.ajax({
-                                        url: "http://10.90.0.42:8008/api/nodes/",
+                                        url: _url,
                                         method: "POST",
                                         contentType: "application/json",
                                         headers: {Authorization: "Bearer " + token,},
@@ -1872,7 +1874,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                 self.arrayBioclimSelected.push({label: "WordlClim", id: " ", parent: "Raster ", level: "5", type: " "})
                 $.ajax({
                     method: "POST",
-                    url: "http://10.90.0.42:8008/api/nodes/",
+                    url: _url,
                     contentType: "application/json",
                     headers: {Authorization: "Bearer " + token,},
                     data: JSON.stringify({query: "query{ all_worldclim_covariables(limit: 1000, filter: \"\"){ layer}}"}),
@@ -1939,7 +1941,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                 console.log("elegiste INEGI2020")
                 $.ajax({
                     method: "POST",
-                    url: "http://10.90.0.42:8008/api/nodes/",
+                    url: _url,
                     headers: {Authorization: "Bearer " + token,},
                     contentType: "application/json",
                     data: JSON.stringify({query: "query{all_censo_inegi_2020_covariables(limit: 2000, filter:\"\"){code}}"}),

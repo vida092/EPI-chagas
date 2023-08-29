@@ -105,9 +105,9 @@ header .logo{
     height: 100%;
     text-indent: -9999px;
 }
-header #logoPINCC{
-    background-color: rgba(195,195,195,.25);
-    background-image: url(/images/pincc.jpg);
+header #logoRR{
+    background-color: rgba(222, 221, 221, 0.314);
+    background-image: url(/images/Fundacion-Rio-Arronte.svg);
     background-size:5em;
     width: 5em;
 }
@@ -124,8 +124,9 @@ header #logoChilam{
     width: 15.5rem;
 }
 
-header #logoCAyCC{
-    background-image: url(/images/CAyCC.png);
+header #logoFCS{
+    background-color: rgba(243, 242, 242, 0.314);
+    background-image: url(/images/f-carlosslim.png);
     background-size:14rem;
     width: 15.5rem;
 }
@@ -252,4 +253,31 @@ h1#epi-species{
 
 .flex-item:last-child {
     flex: 1; 
+}
+
+#loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
