@@ -11,11 +11,14 @@ function submitLoginForm() {
     }).then(function(resp) {
         return resp.json();
     }).then(function(data) {
-        // Guardar el token en localStorage
         
-        localStorage.setItem("token", data.access);
+        if(resp.detail){
+            localStorage.setItem("token", data.access);        
+            redirectToGeoportal(); 
+        }else{
+            alert("contraseña o usuarios no válidos")
+        }
         
-        redirectToGeoportal(); 
     }).catch(function(error){
         alert(error)
         document.getElementById("loading-spinner").classList.add("hidden");

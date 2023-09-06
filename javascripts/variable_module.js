@@ -197,7 +197,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                     case "Hospederos":
                         fetch(_url,{
                             method: "POST",
-                            headers: {'Content-Type': 'application/json'},
+                            headers: {'Authorization': "Bearer " + token,'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_hospederos {name} }'}),
                         })
                             .then(res => res.json())
@@ -231,7 +231,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                     case "Vectores":
                         fetch(_url,{
                             method: "POST",
-                            headers: {'Content-Type': 'application/json'},
+                            headers: {'Authorization': "Bearer " + token,'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_vectores {name}}'}),
                         })
                             .then(res => res.json())
@@ -264,7 +264,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                     case "Patogenos":
                         fetch(_url,{
                             method: "POST",
-                            headers: {'Content-Type': 'application/json'},
+                            headers: {'Authorization': "Bearer " + token, 'Content-Type': 'application/json'},
+                            
                             body: JSON.stringify({ query: 'query { get_diseases_patogenos {name}}'}),
                         })
                             .then(res => res.json())
