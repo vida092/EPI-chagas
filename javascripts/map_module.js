@@ -2267,10 +2267,22 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         console.log(query)
         console.log(_LABEL_MAP)
+        url_chagas=''
+        switch(nodo){
+            case 'hospederos':
+                url_chagas ='http://10.90.0.42:4021';
+            break;
+            case 'patogenos':
+                url_chagas = 'http://10.90.0.42:4022';
+            break;
+            case 'vectores':
+                url_chagas= 'http://10.90.0.42:4023';
+            break;
+        }
 
         $.ajax({
             method: "POST",
-            url: _url,
+            url: url_chagas,
             contentType: "application/json",
             data: JSON.stringify({query: query}),
             success: function (resp) {

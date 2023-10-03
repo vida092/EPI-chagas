@@ -10,23 +10,17 @@ function submitLoginForm() {
         body: JSON.stringify({username: document.getElementById("usuario").value, password: document.getElementById("contrasena").value}),
     }).then(function(resp) {
         return resp.json();
-    }).then(function(data) {
+    }).then(function(resp) {
         
-        if(resp.detail){
-            localStorage.setItem("token", data.access);        
+        
+        if(resp.access){
+            localStorage.setItem("token", resp.access);        
             redirectToGeoportal(); 
         }else{
             alert("contraseña o usuarios no válidos")
         }
         
-    }).catch(function(error){
-        alert(error)
-        document.getElementById("loading-spinner").classList.add("hidden");
-        console.log(error)
     })
-    
-    
-    
 }
 
 

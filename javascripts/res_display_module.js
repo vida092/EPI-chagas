@@ -1239,12 +1239,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
         
         
         // Sí se esta haciendo bien la peticion al servidor de epi-puma 2.0
-        fetch("https://covid19.c3.unam.mx/gateway/api/analysis/cells/",{
+        fetch("https://covid19.c3.unam.mx/chagas/api/analysis/cells/",{
             method:"POST",
             //body: JSON.stringify(data_request),
             body: JSON.stringify(petition),
             headers:{
-               "Content-Type": "application/json" 
+                'Authorization': "Bearer " + token,
+                "Content-Type": "application/json" 
             }
         })
         .then(resp => resp.json())
@@ -1448,11 +1449,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     
 
-                    fetch("https://covid19.c3.unam.mx/gateway/api/analysis/cells/",{
+                    fetch("https://covid19.c3.unam.mx/chagas/api/analysis/cells/",{
                         method:"POST",
                         //body: JSON.stringify(data_request),
                         body: JSON.stringify(body),
                         headers:{
+                            'Authorization': "Bearer " + token,
                             "Content-Type": "application/json" 
                         }
                         })                  
@@ -1587,10 +1589,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log("gridres_column: " + gridres_column);
         console.log(map_result);
         console.log(data);
-        fetch("https://covid19.c3.unam.mx/gateway/api/analysis/cells/",{
+        fetch("https://covid19.c3.unam.mx/chagas/api/analysis/cells/",{
             method:"POST",
             body: JSON.stringify(data),
             headers:{
+                'Authorization': "Bearer " + token,
                 "Content-Type": "application/json"
             }
         })
@@ -1857,10 +1860,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 else{
                     console.log("se hace la petición a la segunda tabla")
                     //fetch("jsons/pintarmapa.json")
-                    fetch("https://covid19.c3.unam.mx/gateway/api/analysis/cells/", {
+                    fetch("https://covid19.c3.unam.mx/chagas/api/analysis/cells/", {
                         method: "POST",
                         body: JSON.stringify(body),
                         headers: {
+                            'Authorization': "Bearer " + token,
                             "Content-Type": "application/json"
                         }
                     })

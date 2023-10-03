@@ -195,7 +195,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                 switch (var_obj){
                     case "Hospederos":
-                        fetch(_url,{
+                        fetch('http://10.90.0.42:4021',{
                             method: "POST",
                             headers: {'Authorization': "Bearer " + token,'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_hospederos {name} }'}),
@@ -229,7 +229,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             }));
                         break;
                     case "Vectores":
-                        fetch(_url,{
+                        fetch('http://10.90.0.42:4023',{
                             method: "POST",
                             headers: {'Authorization': "Bearer " + token,'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_vectores {name}}'}),
@@ -262,7 +262,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                         break;
                     case "Patogenos":
-                        fetch(_url,{
+                        fetch('http://10.90.0.42:4022',{
                             method: "POST",
                             headers: {'Authorization': "Bearer " + token, 'Content-Type': 'application/json'},
                             
