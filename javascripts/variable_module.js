@@ -23,7 +23,8 @@ var variable_module = (function (verbose, url_zacatuche) {
     _module_toast = toast_module(_VERBOSE);
     _module_toast.startToast();
     //var _url = "https://covid19.c3.unam.mx/gateway/api/nodes/"
-    var _url =  "http://10.90.0.42:8008/api/nodes/"
+    var _url =  "https://covid19.c3.unam.mx/chagas/api/nodes/"
+    //var _url =  "http://epichagas.c3.unam.mx/chagas/api/nodes/"
     
     
 
@@ -195,7 +196,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                 switch (var_obj){
                     case "Hospederos":
-                        fetch('http://10.90.0.42:4021',{
+                        fetch(_url,{
                             method: "POST",
                             headers: {'Authorization': "Bearer " + token,'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_hospederos {name} }'}),
@@ -229,7 +230,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             }));
                         break;
                     case "Vectores":
-                        fetch('http://10.90.0.42:4023',{
+                        fetch(_url,{
                             method: "POST",
                             headers: {'Authorization': "Bearer " + token,'Content-Type': 'application/json'},
                             body: JSON.stringify({ query: 'query { get_diseases_vectores {name}}'}),
@@ -262,7 +263,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                         break;
                     case "Patogenos":
-                        fetch('http://10.90.0.42:4022',{
+                        fetch(_url,{
                             method: "POST",
                             headers: {'Authorization': "Bearer " + token, 'Content-Type': 'application/json'},
                             
@@ -290,6 +291,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     opt.setAttribute("class", "disease_opt");
                                     opt.value = filteredDiseases[0]["name"];
                                     opt.innerHTML = filteredDiseases[0]["name"];
+                                    opt.selected = true;
                                     select.append(opt);
                                 }
                             }));
@@ -302,10 +304,10 @@ var variable_module = (function (verbose, url_zacatuche) {
 
             });
 
-            $('#disease_selected').change(function(e){
+            $('#taxon_tree_root_value').change(function(e){
                 
                 var agent_selected = $('#agent_selected').val()
-                var disease_text_selected = $("#disease_selected option:selected").text();
+                var disease_text_selected ="Enfermedad de Chagas"// $("#disease_selected option:selected").text();
                 var tax_root = $("#taxon_tree_root_value").val()
                 console.log(tax_root)
 
@@ -554,7 +556,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         }
 
         self.getTreeSocio = function (){
-            var query = "query{all_censo_inegi_2020_covariables(limit: 2400, filter:\"\"){id name interval bin code}}"
+            var query = "query{all_censo_inegi_2020_covariables(limit: 2400, filter:\"\"){id name interval bin code categoria}}"
             _VERBOSE ? console.log("self.getTreeSocio") : _VERBOSE;
             console.log(id)
             $.ajax({
@@ -564,40 +566,63 @@ var variable_module = (function (verbose, url_zacatuche) {
                 contentType: "application/json",
                 data: JSON.stringify({query: query}),
                 success: function(resp){
-                    var sei=resp.data.all_censo_inegi_2020_covariables
-                    data = [{"id": "inegi", "parent": "#", "text": "CENSO INEGI 2020", "state":{"opened":true}, "icon": "plugins/jstree/images/rep.png", "attr":{"nivel":6, "type":0}}]
-                    var intervals = []
-                    sei.forEach(element =>{
-                        if(!intervals.includes(element.interval)){
-                            intervals.push(element.interval)
+                sei = resp.data.all_censo_inegi_2020_covariables
+                // const uniqueArray = Array.from(new Set(sei.map(JSON.stringify))).map(JSON.parse);
+                // console.log(uniqueArray);
+                data = [{"id": "inegi", "parent": "#", "text": "CENSO INEGI 2020", "state":{"opened":true}, "icon": "plugins/jstree/images/rep.png", "attr":{"nivel":6, "type":0}}]
+                var categorias =[];
+                    sei.forEach(element=>{
+                        if(!categorias.includes(element.categoria)){
+                            categorias.push(element.categoria)
+                            data.push({
+                                "id":element.categoria,
+                                "parent": "inegi",
+                                "text":element.categoria,
+                                "state":{"opened":false},
+                                "icon":"plugins/jstree/images/group.png",
+                                "attr":{"nivel":7, "type":1}
+                            })
                         }
                     })
                     var names=[]
-
-                    sei.forEach(element=>{
-                        if(!names.includes(element.name)){
-                            names.push(element.name)
-                        }
-                    })
-                    
-
+                    var intervals =[]
                     var codes={}
                     sei.forEach(element=>{
                         codes[element.name]=element.code
                     })
-                    
-                    
-                    names.forEach(element=>{
-                        data.push({"id":element, "parent":"inegi","text":element,"state":{"opened":false}, "icon":"plugins/jstree/images/group.png","attr":{"nivel":7, "type":2,"code":codes[element]}})
-                    })
 
-                    sei.forEach(element=>{
-                        names.forEach(name=>{
-                            if(intervals.includes(element.interval) && element.name === name){
-                                data.push({"id":element.interval, "parent": element.name, "text":element.interval, "state":{"opened":false}, "icon":"plugins/jstree/images/percent.png", "attr":{"nivel":8, "type":2, "bin":element.bin, "code":element.code}})
+                    categorias.forEach(categoria=>{
+                        sei.forEach(element=>{
+                            if(!names.includes(element.name) && element.categoria == categoria){
+                                names.push(element.name)
+                                data.push({
+                                    "id": element.name,
+                                    "parent":element.categoria,
+                                    "text": element.name,
+                                    "state":{"opened":false},
+                                    "icon":"plugins/jstree/images/group.png",
+                                    "attr":{"nivel":8, "type":1, "code":codes[element.name]}
+                                    
+                                })
                             }
                         })
+                        // names.forEach(name=>{
+                        //     sei.forEach(element=>{
+                        //         if(!intervals.includes(element.interval)&& element.name === name){
+                        //             intervals.push(element.interval)
+                        //             data.push({
+                        //                 "id": element.interval,
+                        //                 "parent": element.name,
+                        //                 "text": element.interval,
+                        //                 "state": {"opened":true},
+                        //                 "attr": {"nivel": 8, "type":1}
+                        //             })
+                        //         }
+                        //     })
+                        // })
+
                     })
+
                     $("#jstree_variables_socio_fuente").jstree({
                        "plugins":["wholerow", "checkbox"],
                        "core":{
@@ -1965,24 +1990,25 @@ var variable_module = (function (verbose, url_zacatuche) {
                     }
                 })
 
-            }else if ($("#jstree_variables_socio_fuente").jstree(true).get_top_selected().length > 0) {
+            }else if ( true) {
+                var selected_nodes = $("#jstree_variables_socio_fuente").jstree(true).get_selected()
                 console.log("elegiste alguno de los nodos")
-                var headers_selected = $("#jstree_variables_socio_fuente").jstree(true).get_top_selected().length;
-
-                for (i = 0; i < headers_selected; i++) {
-                    var node_temp = $("#jstree_variables_socio_fuente").jstree(true).get_node($("#jstree_variables_socio_fuente").jstree(true).get_top_selected()[i]).original;
-
-                    _VERBOSE ? console.log(node_temp) : _VERBOSE;
-                    if (node_temp.attr.nivel === 7){                        
-                        
-                        self.arraySocioSelected.push({label: node_temp.text, id: node_temp.attr.code, parent: node_temp.parent, level: node_temp.attr.level, type: node_temp.attr.type});
-                        self.arraySocioSelected2.push({taxon: "code", value: node_temp.attr.code}) 
-
-                    }else if(node_temp.attr.nivel === 8){
-                        self.arraySocioSelected.push({label: node_temp.text, id: node_temp.attr, parent: node_temp.attr.parent, level: node_temp.attr.level, type: node_temp.attr.type});
-                        self.arraySocioSelected2.push({taxon: "id", value:node_temp.attr.id.code  }) 
+                var jstreeInstance = $("#jstree_variables_socio_fuente").jstree(true);
+                var selectedNodeTemplates = [];
+                selected_nodes.forEach(function (nodeID) {
+                    var node = jstreeInstance.get_node(nodeID);
+                    var nodeTemplate = node.original 
+                    selectedNodeTemplates.push(nodeTemplate);
+                });
+                selectedNodeTemplates.forEach(node=>{
+                    if(node.attr.nivel ===8){
+                        console.log(node.attr.code)
+                        self.arraySocioSelected.push({label: node.text, id: node.attr.code, parent: node.parent, level: node.attr.level, type: node.attr.type});
+                        self.arraySocioSelected2.push({taxon: "code", value: node.attr.code})
                     }
-                }
+                })
+
+                
 
             }
             console.log("Array para el front")
@@ -2025,7 +2051,7 @@ var variable_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log("self.existsGroup") : _VERBOSE;
 
             var arg_labels = arraySelected.map(function (d) {
-                _VERBOSE ? console.log(d) : _VERBOSE;
+                //_VERBOSE ? console.log(d) : _VERBOSE;
                 return d.label.split(" ")[0];
             });
             // _VERBOSE ? console.log(arg_labels) : _VERBOSE;
@@ -2209,6 +2235,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.addOtherGroup = function (idTree, arraySelected,  gpoName, idDivContainer, typeVar) {
 
             _VERBOSE ? console.log("self.addOtherGroup") : _VERBOSE;
+        
 
            console.log("***** addOtherGroup variables *****")
         //    console.log(idTree)
@@ -2264,13 +2291,15 @@ var variable_module = (function (verbose, url_zacatuche) {
 
             _VERBOSE ? console.log(arraySelected) : _VERBOSE;
             
+            
 
             for (i = 0; i < arraySelected.length; i++) {
-                console.log(arraySelected[i])
+                
 
                 // se elimita el spp del label cuando es tipo BIO
                 if (typeVar == _TYPE_BIO) {
                     var label_taxon = arraySelected[i].numlevel == 8 ? arraySelected[i].label : arraySelected[i].label.split(" ")[0]
+
                     subgroup.push({label: arraySelected[i].level + " >> " + label_taxon, level: arraySelected[i].numlevel, type: arraySelected[i].type});
                     
                     species_target_array.push({ taxon:arraySelected[i].level, value:label_taxon  })

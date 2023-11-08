@@ -54,7 +54,7 @@ footer p.copyright{
     width: 75%;
 }
 h1{
-    --bgGradientMain: linear-gradient(-90deg, rgba(var(--mainColor-RGB),.75) 15%, rgba(var(--mainColor-RGB),0) 100%);
+    --bgGradientMain: linear-gradient(-90deg, rgba(var(--mainColor-RGB),.75) 5%, rgba(var(--mainColor-RGB),0) 100%);
     background-position: 20% center, center, center;
     background-size: cover, cover, 33%;
     background-blend-mode: screen;
@@ -236,7 +236,8 @@ p:not(.copyright){
  ------------------------------------------------------------------------*/
 h1#epi-species{
     background-image: var(--bgGradientMain),
-    url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/slider/epispecies.jpg),
+    url(/images/fondo.jpg),
+    /* url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/slider/epispecies.jpg), */
     url(/images/logo_epi-chagas.png);
 }
 

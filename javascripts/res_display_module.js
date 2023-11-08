@@ -1038,7 +1038,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var single_filter = {};
                 var merge_vars = [];
 
-                _VERBOSE ? console.log(itemGroup) : _VERBOSE;
+                //_VERBOSE ? console.log(itemGroup) : _VERBOSE;
 
                 // bioticos
                 if (parseInt(grupo.type) === _TYPE_BIO) {
@@ -1064,12 +1064,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     // if the type is equal to 1 the item contains the parameter level
                     temp_item_value = itemGroup.label.split(">>")[1].trim();
 
-                    merge_vars.push({
+                   
+
+                    
+                        merge_vars.push({
                         'rank': map_abio.get(parseInt(itemGroup.level)),
                         'value': parseInt(itemGroup.level) !== 1 ? itemGroup.value : itemGroup.type,
                         'type': parseInt(itemGroup.type),
                         'level': group_level_abiotic
-                    });
+                        })
+                    
+                    
 
                 }
 
@@ -1116,6 +1121,24 @@ var res_display_module = (function (verbose, url_zacatuche) {
             hasRaster = false;
 
         });
+        console.log(_TREE_GENERATED)
+        console.log(JSON.stringify(_TREE_GENERATED))
+        const uniqueRequests = _REQUESTS_MADE.reduce((accumulator, request) => {
+            const name = request.covariables[0].name;
+            const existingIndex = accumulator.findIndex(item => item.covariables[0].name === name);
+          
+            if (existingIndex === -1) {
+              // Crear un nuevo objeto que copie las otras propiedades
+              const uniqueRequest = { ...request };
+              accumulator.push(uniqueRequest);
+            }
+          
+            return accumulator;
+          }, []);
+          
+          //console.log(uniqueRequests);
+          //_REQUESTS_MADE = uniqueRequests
+
 
         _REQUESTS_NUMBER = _REQUESTS_MADE.length;
         
@@ -1225,7 +1248,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         //     return !obj.name.includes("Emisiones");
         //   });
         console.log("<====================TREE GENERATED ===================>")
-        console.log(_TREE_GENERATED) ///VERIFICAR QUE PASA CON GRUPO SOCIO PORQUE EL ATRIBUTO CHILDREN TIENE UN OBJETO DE MÁS
+        console.log(_TREE_GENERATED) 
         console.log(JSON.stringify(_TREE_GENERATED))
         
 
@@ -1294,10 +1317,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
             // todas las peticiones han sido realizadas
             
             if (_REQUESTS_NUMBER === 0) {
-                console.log("<-------- _REQUEST_DONE AFTER SLICE ------->")
-                console.log(_REQUESTS_DONE)
                 
                 console.log("<----------- todas las peticiones individuales han sido realizadas ---------->")
+                console.log(_REQUESTS_DONE)                
+                
 
                 // confirma la desaparición del boton anterior de seguimiento
                 // $("#specie_next").css('visibility', 'hidden');

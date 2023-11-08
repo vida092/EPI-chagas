@@ -2260,29 +2260,19 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         if ( fecha_ini.length < 3)
-            var query = 'query{occurrences_by_taxon_' + nodo + '(query: "nombreenfermedad = \''+ _DISEASE_SELECTED + '\' AND ' + "("+ subquery+")" +' "){numeroindividuos gridid_'+ _grid_res + '}}'
+            var query = 'query{occurrences_by_taxon_' + nodo + '(query: "nombreenfermedad = \''+  "Enfermedad de Chagas" + '\' AND ' + "("+ subquery+")" +' "){numeroindividuos gridid_'+ _grid_res + '}}'
         else
-            var query = 'query{occurrences_by_taxon_' + nodo + '(query: "nombreenfermedad = \''+ _DISEASE_SELECTED + '\' AND '+ "("+ subquery+")" +'  AND aniocolecta >= \''+ fecha_ini + ' \' AND aniocolecta <= \'' + fecha_fin + ' \'"){numeroindividuos gridid_'+ _grid_res + '}}'
+            var query = 'query{occurrences_by_taxon_' + nodo + '(query: "nombreenfermedad = \''+ "Enfermedad de Chagas" + '\' AND '+ "("+ subquery+")" +'  AND aniocolecta >= \''+ fecha_ini + ' \' AND aniocolecta <= \'' + fecha_fin + ' \'"){numeroindividuos gridid_'+ _grid_res + '}}'
 
 
         console.log(query)
         console.log(_LABEL_MAP)
-        url_chagas=''
-        switch(nodo){
-            case 'hospederos':
-                url_chagas ='http://10.90.0.42:4021';
-            break;
-            case 'patogenos':
-                url_chagas = 'http://10.90.0.42:4022';
-            break;
-            case 'vectores':
-                url_chagas= 'http://10.90.0.42:4023';
-            break;
-        }
-
+        url_chagas='https://covid19.c3.unam.mx/chagas/api/nodes/'
+        
         $.ajax({
             method: "POST",
             url: url_chagas,
+            headers: {Authorization: "Bearer " + token,},
             contentType: "application/json",
             data: JSON.stringify({query: query}),
             success: function (resp) {

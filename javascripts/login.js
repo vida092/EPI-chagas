@@ -1,10 +1,16 @@
 function redirectToGeoportal() {
     window.location.href = "geoportal_v0.1.html"; 
 }
+function handleEnterKey(event) {
+    if (event.key === "Enter") {
+        submitLoginForm();
+    }
+}
+url="https://covid19.c3.unam.mx/chagas/api/token/"
 
 function submitLoginForm() {
     document.getElementById("loading-spinner").classList.remove("hidden");
-    fetch("http://10.90.0.42:8008/api/token/", {
+    fetch(url, {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: document.getElementById("usuario").value, password: document.getElementById("contrasena").value}),
@@ -18,6 +24,7 @@ function submitLoginForm() {
             redirectToGeoportal(); 
         }else{
             alert("contraseña o usuarios no válidos")
+            document.getElementById("loading-spinner").classList.add("hidden")
         }
         
     })

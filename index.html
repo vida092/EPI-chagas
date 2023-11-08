@@ -63,7 +63,7 @@
             <a class="logo" id="logoChilam" href="https://chilam.c3.unam.mx" target="_blank">Chilam – Laboratorio para la simulación de Sistemas Complejos Adaptativos</a>            
         </div>
 
-        <a target="_blank" href="https://chilam.c3.unam.mx/proyectos/epi-species" class="button-2">Más información sobre EPI-SPECIES</a>
+        <!-- <a target="_blank" href="https://chilam.c3.unam.mx/proyectos/epi-species" class="button-2">Información EPI-SPECIES</a> -->
         <h1 id="epi-species">EPI-Chagas</h1>
 
 
@@ -73,7 +73,7 @@
             <div class="col-md-8">
                 <div class ="flex-item">
                     <h2>Bienvenido a EpI-Chagas<span>Plataforma de Eco-epidemiología Espacial</span></h2>
-                    <p>Epi-Chagas es una herramienta interactiva para el análisis del nicho epidemiológico de la enfermedad de Chagas  y la creación de modelos predictivos para analizar su dinámica espacio-temporal en México.</p>
+                    <p>Epi-Chagas es una herramienta interactiva para el análisis del nicho epidemiológico de la enfermedad de Chagas  y la creación de modelos predictivos para analizar su dinámica espacial en México.</p>
                     <h3>Análisis de nicho epidemiológico</h3>
                     <p>Si deseas realizar un análisis de nicho epidemiológico basta con seguir los siguientes pasos:</p>
                     <ul class="steps" >
@@ -98,7 +98,7 @@
                             <input type="text" id="usuario" name="usuario" required><br><br>
 
                             <label for="contrasena">Contraseña:</label>
-                            <input type="password" id="contrasena" name="contrasena" required><br><br>
+                            <input type="password" id="contrasena" name="contrasena" required onkeyup="handleEnterKey(event)"><br><br>
 
                             <a class="button-1" onclick="submitLoginForm()">Iniciar Sesión</a>
 
