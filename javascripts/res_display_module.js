@@ -1158,8 +1158,36 @@ var res_display_module = (function (verbose, url_zacatuche) {
         
 
 
-        if(body.covariables.length === 1 && body.covariables[0] === "snib"  && body.covariable_filter.snib.length > 1){
+        // if(body.covariables.length === 1 && body.covariables[0] === "snib"  && body.covariable_filter.snib.length > 1){
             
+        //     body.covariable_filter.snib.forEach((covariableEntry) => {
+        //         const copia = JSON.parse(JSON.stringify(body));
+        //         copia.covariable_filter.snib = [covariableEntry];
+        //         copies.push(copia);
+        //     });
+            
+
+        // }else{
+        //     for (let i = 0; i < covariablesCount; i++) {
+        //         const copy = JSON.parse(JSON.stringify(body)); // Copia profunda del JSON original
+        //         copy.covariables = [body.covariables[i]]; // Cambiar el valor de "covariables"
+    
+        //         // Actualizar "covariable_filter" solo si los valores son iguales
+        //         if (body.covariable_filter && body.covariable_filter[body.covariables[i]]) {
+        //         copy.covariable_filter = {
+        //             [body.covariables[i]]: body.covariable_filter[body.covariables[i]]
+        //         };
+        //         } else {
+        //         copy.covariable_filter = null;
+        //         }
+    
+        //         copies.push(copy);
+                
+        //     }
+
+        // }
+        if(body.covariables.length === 1 && body.covariables[0] === "snib"  && body.covariable_filter.snib.length > 1){
+            console.log("copias de snib sin mas covariables")
             body.covariable_filter.snib.forEach((covariableEntry) => {
                 const copia = JSON.parse(JSON.stringify(body));
                 copia.covariable_filter.snib = [covariableEntry];
@@ -1168,27 +1196,37 @@ var res_display_module = (function (verbose, url_zacatuche) {
             
 
         }else{
-            for (let i = 0; i < covariablesCount; i++) {
-                const copy = JSON.parse(JSON.stringify(body)); // Copia profunda del JSON original
-                copy.covariables = [body.covariables[i]]; // Cambiar el valor de "covariables"
-    
-                // Actualizar "covariable_filter" solo si los valores son iguales
-                if (body.covariable_filter && body.covariable_filter[body.covariables[i]]) {
-                copy.covariable_filter = {
-                    [body.covariables[i]]: body.covariable_filter[body.covariables[i]]
-                };
-                } else {
-                copy.covariable_filter = null;
-                }
-    
-                copies.push(copy);
-                
-            }
+            console.log("copias de covariables")
 
+            for(var i=0; i < body.covariables.length; i++){
+                var copia = JSON.parse(JSON.stringify(body));
+                copia.covariables = [copia.covariables[i]]
+
+                for(var covariable in copia.covariable_filter){
+                    if(covariable!== copia.covariables[0]){
+                        delete copia.covariable_filter[covariable];
+                    }
+                }
+                copies.push(copia)
+            }
         }
 
         
         // Imprimir las copias
+        function compararCovariables(a, b) {
+            const orden = ["snib", "worldclim", "inegi2020"];
+          
+            const indexA = orden.indexOf(a.covariables[0]);
+            const indexB = orden.indexOf(b.covariables[0]);
+          
+            return indexA - indexB;
+        }
+          
+        // Aplicar el método sort al array copies
+        copies.sort(compararCovariables);
+          
+          // El array copies ahora está reorganizado 
+        console.log(copies);
         copies.forEach((copy, index) => {
             console.log(`Copia ${index + 1}:`, copy);
         });
