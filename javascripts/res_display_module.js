@@ -1551,6 +1551,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             console.log(data_score_cell)
                             console.log(">====================================================<8")
                             // console.log(cell_summary)
+                            _current_data_score_cell = _utils_module.reduceScoreCell(data_score_cell, val_apriori, numr);
+                            _configureStyleMap();
 
                             
                             $("#div_munlist").hide();
@@ -2196,6 +2198,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 var range = d.tag.split(":")
                 var label = d.label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                
+                if(d.group_name ==="inegi2020"){                    
+                    var label = d.label.replace(/[^a-zA-Z0-9\sÀ-ÿ]/g, "")                    
+                }
 
                 var min = (parseFloat(range[0]) * d.coeficiente).toFixed(3) + " " + d.unidad
                 var max = (parseFloat(range[1]) * d.coeficiente).toFixed(3) + " " + d.unidad
@@ -3010,6 +3016,38 @@ var res_display_module = (function (verbose, url_zacatuche) {
         });
 
     }
+        /**
+     * Este método manda petición al servidor cuando una celda del mapa de análisis es seleccionada para obtener los datos de la celda
+     * @function getFeatureInfo 
+     * @public 
+     * @memberof! res_display_module
+     * 
+     * 
+     * @param {string} request       
+     */
+    function getFeatureInfo(request, callback) {
+        //console.log(request)
+        $.ajax({
+            url: "https://covid19.c3.unam.mx/gateway/api/analysis/cells/",
+            method: "POST",
+            headers:{
+                'Authorization': "Bearer " + token,
+                "Content-Type": "application/json" 
+            },
+            data: request,
+            success: function (resp) {
+                console.log(resp);
+                var arr = resp.data
+                var rows_data = arr.map(obj => ({
+                    especievalida: obj.especievalida,
+                    score: obj.score,
+                }));
+                // callback llama a los datos procesados
+                callback(rows_data);
+            }
+        });
+    }
+    
 
 
     /**
@@ -3509,6 +3547,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         showGetFeatureInfo: showGetFeatureInfo,
         showGetFeatureInfoOccCell: showGetFeatureInfoOccCell,
         get_cData: get_cData,
+        getFeatureInfo:getFeatureInfo,
         getValidationTable: getValidationTable,
         updateLabels: updateLabels,
         callDisplayProcess: callDisplayProcess,

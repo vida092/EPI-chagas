@@ -793,15 +793,100 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
                  // agrega listener para generar pop en celda
-                 map.on('click', function (e) {
+                  map.on('click', function (e) {
+                    _grid_map.features.forEach(function (feature) {
+                        if (turf.booleanPointInPolygon(turf.point([e.latlng.lng, e.latlng.lat]), feature.geometry)) {
+                            var prop = feature.properties;
+                            var body_copy = JSON.parse(JSON.stringify(body));
+                            body_copy.for_specific_cell = true;
 
-                     console.log(e.latlng.lat + ", " + e.latlng.lng);
+                            body_copy.cell_id = feature.properties.gridid;
 
-                     if (_tipo_modulo === _MODULO_NICHO) {
-                         _display_module.showGetFeatureInfo(e.latlng.lat, e.latlng.lng, _taxones, _REGION_SELECTED);
-                     }
+                            var a=body_copy.cell_id.toString();
+                            console.log(body_copy.cell_id)
+                            if (a.length === 4) {
+                               a = "0" + a;                            
+                            }
+                            body_copy.cell_id = a
+                            console.log(body_copy)
+                                                        
 
-                 });
+                
+                            if (_tipo_modulo === _MODULO_NICHO) {
+                                _display_module.getFeatureInfo(JSON.stringify(body_copy), function (rows_data) {
+                                    //rows para tabla
+                                    console.log(rows_data);
+                
+                                
+                                    mostrarPopupEnMapa(rows_data);
+                                });
+                            }
+                        }
+                    });
+                });
+                
+                function mostrarPopupEnMapa(data) {
+                    // Crear el modal
+                    console.log(data)
+                    var modal = document.createElement("div");
+                    modal.className = "modal fade";
+                    modal.id = "popupModal";
+                    modal.tabIndex = "-1";
+                    modal.role = "dialog";
+                    modal.setAttribute("aria-labelledby", "popupModalLabel");
+                    modal.setAttribute("aria-hidden", "true");
+                
+                    // Crear el contenido del modal
+                    var modalContent = document.createElement("div");
+                    modalContent.className = "modal-dialog";
+                    modalContent.role = "document";
+                
+                    // Crear el contenido del modal
+                    var modalBody = document.createElement("div");
+                    modalBody.className = "modal-content";
+                
+                    // Crear el encabezado del modal
+                    var modalHeader = document.createElement("div");
+                    modalHeader.className = "modal-header";
+                    modalHeader.innerHTML = "<h5 class='modal-title' id='popupModalLabel'>Aporte de Score por specie</h5>";
+                
+                    // Crear el cuerpo del modal
+                    var modalTable = document.createElement("table");
+                    modalTable.className = "table";
+                    var tableBody = document.createElement("tbody");
+                
+                    
+                    data.forEach(function (rowData) {
+                        var row = tableBody.insertRow(-1);
+                        var especieCell = row.insertCell(0);
+                        var scoreCell = row.insertCell(1);
+                        especieCell.innerHTML = rowData.especievalida;
+                        scoreCell.innerHTML = rowData.score.toFixed(3);
+                    });
+
+                    var totalScore = data.reduce(function (total, rowData) {
+                        return total + rowData.score;
+                    }, 0);
+                    var totalRow = tableBody.insertRow(-1);
+                    var totalEspecieCell = totalRow.insertCell(0);
+                    var totalScoreCell = totalRow.insertCell(1);
+                    totalEspecieCell.innerHTML = "Total";
+                    totalScoreCell.innerHTML = totalScore.toFixed(3);
+                
+                    modalTable.appendChild(tableBody);
+                
+                    // Agregar el cuerpo del modal al modal
+                    modalBody.appendChild(modalHeader);
+                    modalBody.appendChild(modalTable);
+                    modalContent.appendChild(modalBody);
+                    modal.appendChild(modalContent);
+                
+                    // Agregar el modal al cuerpo del documento
+                    document.body.appendChild(modal);
+                
+                    // Mostrar el modal
+                    $("#popupModal").modal("show");
+                }
 
                  if (_tipo_modulo === _MODULO_NICHO) {
 
@@ -3610,7 +3695,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         var sufijo = "_Exp_" + date.getFullYear() + "_" + date.getMonth() + "_" + date.getDay() + "_" + date.getHours() + ":" + date.getMinutes();
         $("#map_download").attr("download", "map" + sufijo + ".geojson");
 
-        var grid_map_2export = {"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": []}
+        var grid_map_2export = {"type": "featureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": []}
         var features = [];
 
         for (var i = 0; i < _grid_map.features.length; i++) {
@@ -3635,7 +3720,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 //        $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '')  + sufijo + ".geojson");
         $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '') + sufijo + ".geojson");
 
-        var sp_target_2export = {"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": []}
+        var sp_target_2export = {"type": "featureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": []}
         var features = [];
         var temp_features = _allowedPoints.values();
 
