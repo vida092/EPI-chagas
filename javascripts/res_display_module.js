@@ -1934,7 +1934,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     .then(resp => resp.json())
                     .then(resp => {
                         console.log(resp)
-                        resp.decil_cells=[{cell: 196, decile: 5},{cell: 1051, decile: 5},{cell: 1118, decile: 5},{cell: 1988, decile: 5},{cell: 251, decile: 5},{cell: 1492, decile: 5},{cell: 887, decile: 5},{cell: 1342, decile: 5},{cell: 209, decile: 5},{cell: 700, decile: 5},{cell: 532, decile: 5}]
+                        //resp.decil_cells=[{cell: 196, decile: 5},{cell: 1051, decile: 5},{cell: 1118, decile: 5},{cell: 1988, decile: 5},{cell: 251, decile: 5},{cell: 1492, decile: 5},{cell: 887, decile: 5},{cell: 1342, decile: 5},{cell: 209, decile: 5},{cell: 700, decile: 5},{cell: 532, decile: 5}]
 
                         // $("#map_next").css('visibility', 'visible');
                         // $("#map_next").show("slow");

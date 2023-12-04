@@ -3050,7 +3050,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             
             var no_cells = 0
             console.log("<====================================================>3")
-            map_type = 'range'
+            //map_type = 'range'
             console.log(scales)
             console.log(map_type)
             console.log(">====================================================<3")
