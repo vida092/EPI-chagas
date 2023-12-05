@@ -1097,6 +1097,58 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
     }
 
+     function colorizeDecileFeatures2(decileData , deciles , grid_map = _grid_map_decil,  tileLayer = _tileDecilLayer) {
+
+        _VERBOSE ? console.log("colorizeDecileFeatures2") : _VERBOSE;
+          
+        for (var i = 0; i < grid_map.features.length; i++) {
+            // pasar gridid a string
+            var grididString = String(grid_map.features[i].properties.gridid);
+    
+            // si hay 4 digitos se agrega 0
+            if (grididString.length === 4) {
+                grididString = "0" + grididString;
+            }
+            grid_map.features[i].properties.gridid = grididString 
+        }
+        console.log(grid_map)  
+        
+        var filteredDecileData = decileData.filter(function(d) {
+            return deciles.includes(d.bin);
+        });
+        console.log(filteredDecileData)
+    
+        var cells_map = filteredDecileData.map(function(d) { return d.gridid; });
+        var decile_map = filteredDecileData.map(function(d) { return d.bin; });
+    
+        var verdes = ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443", "#006837", "#00542d", "#004529"];
+    
+        var scale_color_function = d3.scale.ordinal()
+            .domain(deciles)
+            .range(verdes);
+    
+        for (var i = 0; i < grid_map.features.length; i++) {
+            var index = cells_map.indexOf(grid_map.features[i].properties.gridid);
+            
+            if (index !== -1) {
+                grid_map.features[i].properties.color = scale_color_function(decile_map[index]);
+                grid_map.features[i].properties.stroke = 'rgba(0,0,0,0.3)';
+            } else {
+                grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
+                grid_map.features[i].properties.stroke = 'rgba(0,0,0,0)';
+            }
+        }
+        console.log(grid_map)
+    
+        tileLayer.redraw();
+        map.invalidateSize();
+    
+        if (!_first_loaded) {
+            var values_occ = d3.range(1,11)
+            _cargaPaletaColorDecil(verdes, deciles);
+        }
+    }
+
 
 
 
@@ -3828,6 +3880,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         clearMapOcc: clearMapOcc,
         startMap: startMap,
         getGridMap2Export: getGridMap2Export,
+        colorizeDecileFeatures2: colorizeDecileFeatures2,
         getSP2Export: getSP2Export,
         createRankColor: createRankColor,
         clearAllLayers: clearAllLayers,

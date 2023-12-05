@@ -1946,14 +1946,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var percentage_avg = resp.percentage_avg;
 
-                            //var decil_cells = resp.data_score_cell;
-                            var decil_cells = resp.decil_cells;                            
+                            var decil_cells = resp.data_score_cell;
+                            //var decil_cells = resp.decil_cells;                            
 
                             console.log(percentage_avg)
 
                             console.log(decil_cells)
 
-                            activeDecilOccurrences(decil_cells, deciles)
+                            activeDecilOccurrences2(decil_cells, deciles)
 
                             createTableDecil(percentage_avg)
 
@@ -2254,6 +2254,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // $("#hist_next").css('visibility', 'visible');
         // $("#hist_next").show("slow");
 
+
+    }
+
+    function activeDecilOccurrences2 (decil_cells,deciles){
+
+        _VERBOSE ? console.log("pintar celdas deciles"): _VERBOSE
+        _map_module_nicho.updateDecilLayer(deciles)
+
+        _map_module_nicho.setDecilCells(decil_cells);
+        _map_module_nicho.colorizeDecileFeatures2(decil_cells,deciles);
+        $('#map').loading('stop');
 
     }
 
