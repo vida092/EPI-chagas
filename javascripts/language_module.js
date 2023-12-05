@@ -741,7 +741,7 @@ var language_module = (function (verbose) {
     function _confLiveTutorialNet() {
 
         $('#btn_tuto_steps.display-marker').on('click', function () {            
-            
+            alert("algo")
             var item_tab, item_tree, group_btn, clean_btn;
             
             if ($("#a_taxon_fuente").parent().hasClass("active")) {

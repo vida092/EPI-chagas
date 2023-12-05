@@ -3025,25 +3025,23 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      * @param {string} request       
      */
-    function getFeatureInfo(request, callback) {
-        //console.log(request)
+     function getFeatureInfo(request, feature, callback) {
+        
         $.ajax({
             url: "https://covid19.c3.unam.mx/gateway/api/analysis/cells/",
             method: "POST",
-            headers:{
-                'Authorization': "Bearer " + token,
-                "Content-Type": "application/json" 
-            },
+            contentType: "application/json",
             data: request,
             success: function (resp) {
-                console.log(resp);
-                var arr = resp.data
+                var arr = resp.data;
                 var rows_data = arr.map(obj => ({
                     especievalida: obj.especievalida,
                     score: obj.score,
                 }));
-                // callback llama a los datos procesados
-                callback(rows_data);
+                console.log("getFeatureInfo")
+                console.log(rows_data)
+                // feature information in the callback
+                callback(feature, rows_data);
             }
         });
     }

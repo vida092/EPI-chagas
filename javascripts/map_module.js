@@ -793,40 +793,42 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
                  // agrega listener para generar pop en celda
-                  map.on('click', function (e) {
+                 map.on('click', function (e) {
+                    $('#map2').loading({
+                        stoppable: true
+                    });
                     _grid_map.features.forEach(function (feature) {
                         if (turf.booleanPointInPolygon(turf.point([e.latlng.lng, e.latlng.lat]), feature.geometry)) {
                             var prop = feature.properties;
                             var body_copy = JSON.parse(JSON.stringify(body));
                             body_copy.for_specific_cell = true;
-
                             body_copy.cell_id = feature.properties.gridid;
-
-                            var a=body_copy.cell_id.toString();
-                            console.log(body_copy.cell_id)
+                    
+                            var a = body_copy.cell_id.toString();
                             if (a.length === 4) {
-                               a = "0" + a;                            
+                                a = "0" + a;
                             }
-                            body_copy.cell_id = a
-                            console.log(body_copy)
-                                                        
-
-                
+                            body_copy.cell_id = a;
+                            console.log(prop.gridid)
+                    
                             if (_tipo_modulo === _MODULO_NICHO) {
-                                _display_module.getFeatureInfo(JSON.stringify(body_copy), function (rows_data) {
-                                    //rows para tabla
-                                    console.log(rows_data);
-                
-                                
-                                    mostrarPopupEnMapa(rows_data);
+                                // Pass the feature information to the getFeatureInfo function
+                                _display_module.getFeatureInfo(JSON.stringify(body_copy), feature, function (feature, rows_data) {
+                                    $('#map2').loading('stop');
+                                    mostrarPopupEnMapa(feature, rows_data);
                                 });
                             }
                         }
                     });
+                    
                 });
                 
-                function mostrarPopupEnMapa(data) {
+                function mostrarPopupEnMapa(feature, data) {
                     // Crear el modal
+                    var existingModal = document.getElementById("popupModal");
+                    if (existingModal) {
+                        existingModal.remove();
+                    }
                     console.log(data)
                     var modal = document.createElement("div");
                     modal.className = "modal fade";
@@ -838,8 +840,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 
                     // Crear el contenido del modal
                     var modalContent = document.createElement("div");
-                    modalContent.className = "modal-dialog";
+                    modalContent.className = "modal-dialog modal-dialog-scrollable"; 
                     modalContent.role = "document";
+                    modalContent.style.maxHeight = "50%";
+                    modalContent.style.marginTop = "10%"
                 
                     // Crear el contenido del modal
                     var modalBody = document.createElement("div");
@@ -847,8 +851,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 
                     // Crear el encabezado del modal
                     var modalHeader = document.createElement("div");
-                    modalHeader.className = "modal-header";
-                    modalHeader.innerHTML = "<h5 class='modal-title' id='popupModalLabel'>Aporte de Score por specie</h5>";
+                    modalHeader.className = "modal-header text-center";
+                    modalHeader.innerHTML = "<h4 class='modal-title font-weight-bold' id='popupModalLabel'>Aporte de Score por especie</h4>";
                 
                     // Crear el cuerpo del modal
                     var modalTable = document.createElement("table");
