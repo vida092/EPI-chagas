@@ -163,7 +163,8 @@ var module_index = (function() {
 
 
         $("#btn_tutorial").click(function() {
-            window.open("https://epichagas.c3.unam.mx/docs/tutorial.pdf");
+            console.log(" tutorial . pdf")
+            window.open("https://epichagas.c3.unam.mx/docs/tutorial_epi_chagas.pdf");
         });
 
         var timer = 5000;
