@@ -163,7 +163,7 @@ var module_index = (function() {
 
 
         $("#btn_tutorial").click(function() {
-            window.open("https://epichagas.c3.unam.mx/"+ "/docs/tutorial.pdf");
+            window.open("https://epichagas.c3.unam.mx/docs/tutorial.pdf");
         });
 
         var timer = 5000;
