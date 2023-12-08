@@ -358,7 +358,8 @@ var module_nicho = (function () {
         });
 
         $("#btn_tutorial").click(function () {
-            window.open(_url_front + "/docs/tutorial.pdf");
+            console.log(" tutorial . pdf")
+            window.open("https://epichagas.c3.unam.mx/docs/tutorial_epi_chagas.pdf");
         });
 
         _SCROLL_INDEX = 0;
